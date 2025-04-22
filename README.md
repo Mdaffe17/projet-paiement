@@ -4,55 +4,74 @@
 [CODE PERMANENT]: [DAFM01119900]
 
 ##  Description
-Ce projet est une API REST permettant la gestion des commandes en ligne.  
-L'application permet de :
-- Récupérer la liste des produits disponibles
-- Créer une commande pour un produit
-- Ajouter les informations du client (adresse & email)
-- Calculer les taxes et les frais de livraison 
-- Effectuer un paiement avec carte de crédit 
+Ce projet est une **API web de paiement** réalisée avec **Flask**, **PostgreSQL**, **Redis** et **RQ**.  
+Il permet de :
 
+- Récupérer dynamiquement la liste des produits depuis une API externe
+- Créer une commande pour un ou plusieurs produits
+- Ajouter les informations client (adresse, email, province)
+- Calculer automatiquement la **taxe selon la province** et les **frais de livraison**
+- Afficher un formulaire de paiement avec carte de crédit
+- **Traiter le paiement de manière asynchrone** grâce à Redis + RQ
+- Mettre à jour le statut de la commande après un paiement réussi
+- Afficher et **vérifier le statut d’une commande** (payée ou non)
+- Interface HTML minimaliste avec design CSS
 ---
+## ⚙️ Technologies utilisées
+
+- **Python 3.11**
+- **Flask**
+- **PostgreSQL** (au lieu de SQLite dans la première partie)
+- **Redis** (mise en cache)
+- **RQ** (traitement asynchrone des paiements)
+- **HTML + CSS** (interface utilisateur)
+- **Docker & docker-compose** (conteneurisation)
 
 ##  Installation et Exécution
+Python 3.11+
+- Docker + Docker Compose
+- Compte GitHub (optionnel pour clonage)
+
 pip install -r requirements.txt
+
 ###  **Installation des dépendances**
 Avant de commencer, assurez-vous d'avoir au minimum **Python 3.6+** installé sur votre machine.
 
-####  Installer les bibliothèques nécessaires :
+🔧 Étapes
 
-##  **Démarrer l'application Flask**
+1. **Cloner le dépôt GitHub**
+  bash
+ git clone https://github.com/Mdaffe17/projet-paiement.git
+ cd projet-paiement
+2. **Lancer les services avec Docker**
+ docker compose up --build
+
+Cela lance :
+
+Le backend Flask (web)
+
+PostgreSQL (db)
+
+Redis (redis)
+
+Worker RQ (worker)
+####  Accéder a l'application :
+
+Page d’accueil : http://localhost:5000/
+
+Commander un produit
+
+Remplir les infos client
+
+Payer la commande
+
+Vérifier le statut de la commande
+
+
+##  **📝 Auteurs**
+Mouctar Daffe — Étudiant en Informatique UQAC
+
+📧 mouctardaffe99@gmail.com
+🔗 https://www.linkedin.com/in/mouctar-daffe/
+
 python app.py
-## 1. Récupérer la liste des produits
-curl -X GET http://127.0.0.1:5000/products
-## 2. Créer une commande
-curl -X POST http://127.0.0.1:5000/orders \
-     -H "Content-Type: application/json" \
-     -d '{"product": {"id": 1, "quantity": 2}}'
-## 3. Ajouter l'adresse d'expédition et l'email du client
-curl -X PUT http://127.0.0.1:5000/orders/1 \
-     -H "Content-Type: application/json" \
-     -d '{
-          "email": "client@example.com",
-          "shipping_information": {
-              "country": "Canada",
-              "address": "201, rue Président-Kennedy",
-              "postal_code": "G7X 3Y7",
-              "city": "Chicoutimi",
-              "province": "QC"
-          }
-     }'
-## 4. Effectuer un paiement
-curl -X PUT http://127.0.0.1:5000/orders/1 \
-     -H "Content-Type: application/json" \
-     -d '{
-        "credit_card": {
-            "name": "John Doe",
-            "number": "4242 4242 4242 4242",
-            "expiration_year": 2024,
-            "expiration_month": 9,
-            "cvv": "123"
-        }
-     }'
-## 5. Lancer les tests
-pytest tests/ -v

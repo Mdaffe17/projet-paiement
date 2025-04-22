@@ -1,7 +1,7 @@
-Flask
-peewee
-psycopg2-binary
-python-dotenv
-redis
-rq
-requests
+Flask==2.3.2
+peewee==3.17.1
+psycopg2-binary==2.9.9
+requests==2.31.0
+redis==5.0.1
+rq==1.15.1
+playhouse==0.8.10
