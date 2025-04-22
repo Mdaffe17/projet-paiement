@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Commande - {{ product.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Commande : {{ product.name }}</h1>
+    <p><strong>Prix unitaire :</strong> {{ product.price }} $</p>
+
+    {% if order %}
+        <h2>Détails de la commande</h2>
+        <p><strong>Quantité :</strong> {{ order.quantity }}</p>
+        <p><strong>Total :</strong> {{ order.total_price }} $</p>
+        <p><strong>Taxes :</strong> {{ order.tax }} $</p>
+        <p><strong>Livraison :</strong> {{ order.shipping_cost }} $</p>
+        <p><strong>Total TTC :</strong> {{ order.total_price_with_tax }} $</p>
+        <p><strong>Statut :</strong>
+            {% if order.paid %}
+                 <strong style="color: green;">Payée</strong>
+            {% else %}
+                 <strong style="color: red;">Non payée</strong>
+            {% endif %}
+        </p>
+
+       {% if not order.paid %}
+        <h2>Procéder au paiement</h2>
+        <a href="{{ url_for('routes.payment_form', order_id=order.id) }}">
+            <button>Payer maintenant</button>
+        </a>
+        {% else %}
+            <p style="color: green; font-weight: bold;">Merci pour votre paiement !</p>
+        {% endif %}
+    {% else %}
+        <h2>Passer une commande</h2>
+        <form action="{{ url_for('routes.submit_order_form') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+
+            <label>Quantité :</label>
+            <input type="number" name="quantity" min="1" required><br>
+
+            <label>Email :</label>
+            <input type="email" name="email" required><br>
+
+            <label>Adresse :</label>
+            <input type="text" name="address" required><br>
+
+            <label>Province :</label>
+            <select name="province" required>
+                <option value="QC">Québec</option>
+                <option value="ON">Ontario</option>
+                <option value="AB">Alberta</option>
+                <option value="BC">Colombie-Britannique</option>
+                <option value="NS">Nouvelle-Écosse</option>
+            </select><br>
+
+            <button type="submit">🛒 Commander</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{{ url_for('routes.home') }}">🏠 Retour à l'accueil</a></p>
+</body>
+</html>

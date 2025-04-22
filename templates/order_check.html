@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vérifier une commande</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Vérifier le statut d'une commande</h1>
+    <form method="post">
+        <label for="order_id">ID de la commande :</label>
+        <input type="number" name="order_id" required>
+        <button type="submit">Voir le statut</button>
+    </form>
+    <p><a href="{{ url_for('routes.home') }}">🏠 Retour à l'accueil</a></p>
+</body>
+</html>

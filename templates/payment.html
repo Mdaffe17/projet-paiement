@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement de la commande</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Paiement de la commande</h1>
+
+    <p><strong>Produit :</strong> {{ order.product.name }}</p>
+    <p><strong>Total TTC :</strong> {{ order.total_price + order.tax + order.shipping_cost }} $</p>
+
+    {% if order.paid %}
+        <p style="color: green; font-weight: bold;"> Cette commande a déjà été payée.</p>
+        <p><a href="{{ url_for('routes.home') }}">🏠 Retour à l'accueil</a></p>
+    {% else %}
+        <form method="post" action="{{ url_for('routes.payment_form', order_id=order.id) }}">
+            <label>Nom sur la carte :</label>
+            <input type="text" name="name" required><br>
+
+            <label>Numéro de carte :</label>
+            <input type="text" name="number" required><br>
+
+            <label>Mois d'expiration :</label>
+            <input type="number" name="expiration_month" min="1" max="12" required><br>
+
+            <label>Année d'expiration :</label>
+            <input type="number" name="expiration_year" min="2024" max="2035" required><br>
+
+            <label>CVV :</label>
+            <input type="text" name="cvv" required><br>
+
+            <button type="submit"> Payer</button>
+        </form>
+        <p><a href="{{ url_for('routes.order_status', order_id=order.id) }}">⬅ Retour au statut</a></p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Statut de la commande</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Statut de la commande</h1>
+
+    <p><strong>Produit :</strong> {{ order.product.name }}</p>
+    <p><strong>Quantité :</strong> {{ order.quantity }}</p>
+    <p><strong>Total TTC :</strong> {{ order.total_price + order.tax + order.shipping_cost }} $</p>
+    <p><strong>Email :</strong> {{ order.email }}</p>
+    <p><strong>Adresse :</strong> {{ order.address }}</p>
+    <p><strong>Province :</strong> {{ order.province }}</p>
+
+    {% if message == "paiement" %}
+        <p style="color: green; font-weight: bold;">✅ Paiement effectué avec succès. Merci pour votre commande !</p>
+        <p><a href="{{ url_for('routes.home') }}">🏠 Retour à l'accueil</a></p>
+    {% else %}
+        <p><strong>Statut :</strong>
+            {% if order.paid %}
+                <strong style="color: green;">Commande payée</strong>
+            {% else %}
+                <strong style="color: red;">Non payée</strong> –
+                <a href="{{ url_for('routes.payment_form', order_id=order.id) }}">Payer maintenant</a>
+            {% endif %}
+        </p>
+        <p><a href="{{ url_for('routes.home') }}">🏠 Retour à la boutique</a></p>
+    {% endif %}
+</body>
+</html>
