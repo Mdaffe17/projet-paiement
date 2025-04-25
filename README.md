@@ -3,6 +3,7 @@
 [PRENOM]: [MOUCTAR] 
 [CODE PERMANENT]: [DAFM01119900]
 
+Lien de la capsule vidéo : https://youtu.be/ks04bro5tDc?si=8TJjdGDWyw9mHQEy
 ##  Description
 Ce projet est une **API web de paiement** réalisée avec **Flask**, **PostgreSQL**, **Redis** et **RQ**.  
 Il permet de :
